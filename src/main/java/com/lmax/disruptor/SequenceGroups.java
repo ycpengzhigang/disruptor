@@ -23,7 +23,9 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * Provides static methods for managing a {@link SequenceGroup} object.
  */
 class SequenceGroups
-{
+{	/**
+	  * 这个方法的作用还没有怎么看懂????
+	  */
     static <T> void addSequences(
         final T holder,
         final AtomicReferenceFieldUpdater<T, Sequence[]> updater,
@@ -54,6 +56,8 @@ class SequenceGroups
          *  为什么使用原子更新? 
          *  直到设置不成功为止
          *  这里是一个对象，那是如何判断是否是原子更新呢  -- 》更新的 是地址
+         *  currentSequences：当前值currentSequences
+         *  updatedSequences：待更新的值
          */
         while (!updater.compareAndSet(holder, currentSequences, updatedSequences));
         

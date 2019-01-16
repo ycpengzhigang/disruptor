@@ -25,11 +25,13 @@ import java.util.*;
  * @param <T> the type of the {@link EventHandler}
  */
 class ConsumerRepository<T> implements Iterable<ConsumerInfo>
-{
+{	// 事件处理者对应的事件处理信息的状态 EventProcessorInfo 包括事件的处理者 ，事件处理信息，事件栅栏
     private final Map<EventHandler<?>, EventProcessorInfo<T>> eventProcessorInfoByEventHandler =
         new IdentityHashMap<>();
+    // 序列对应的消费信息
     private final Map<Sequence, ConsumerInfo> eventProcessorInfoBySequence =
         new IdentityHashMap<>();
+    // 事件处理信息
     private final Collection<ConsumerInfo> consumerInfos = new ArrayList<>();
 
     public void add(
@@ -90,7 +92,8 @@ class ConsumerRepository<T> implements Iterable<ConsumerInfo>
     {
         return getEventProcessorFor(handler).getSequence();
     }
-
+    
+    // 没能理解这个方法的作用
     public void unMarkEventProcessorsAsEndOfChain(final Sequence... barrierEventProcessors)
     {
         for (Sequence barrierEventProcessor : barrierEventProcessors)

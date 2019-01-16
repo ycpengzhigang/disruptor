@@ -559,7 +559,7 @@ public class Disruptor<T>
         checkNotStarted();
 
         final Sequence[] processorSequences = new Sequence[eventHandlers.length];
-        // 设置序列屏障
+        // 设置序列屏障 
         final SequenceBarrier barrier = ringBuffer.newBarrier(barrierSequences);
 
         for (int i = 0, eventHandlersLength = eventHandlers.length; i < eventHandlersLength; i++)
@@ -577,7 +577,7 @@ public class Disruptor<T>
             consumerRepository.add(batchEventProcessor, eventHandler, barrier);
             processorSequences[i] = batchEventProcessor.getSequence();
         }
-
+        // 每次添加完事件处理器后，更新追踪序列，用于后续调用链的添加判断。--???这个地方没能理解
         updateGatingSequencesForNextInChain(barrierSequences, processorSequences);
 
         return new EventHandlerGroup<>(this, consumerRepository, processorSequences);
@@ -593,8 +593,8 @@ public class Disruptor<T>
             {   // 移除栅栏序列
                 ringBuffer.removeGatingSequence(barrierSequence);
             }
-            // 
-            consumerRepository.unMarkEventProcessorsAsEndOfChain(barrierSequences);// 取消标记上一组消费者为消费链末端
+            // 取消标记上一组消费者为消费链末端
+            consumerRepository.unMarkEventProcessorsAsEndOfChain(barrierSequences);
         }
     }
 

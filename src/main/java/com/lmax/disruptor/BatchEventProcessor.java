@@ -139,7 +139,7 @@ public final class BatchEventProcessor<T>
             finally
             {
                 notifyShutdown();
-                             running.set(IDLE);
+                running.set(IDLE);
             }
         }
         else
@@ -176,6 +176,7 @@ public final class BatchEventProcessor<T>
                 while (nextSequence <= availableSequence)
                 {
                     event = dataProvider.get(nextSequence);
+                    // 需要再理解一下
                     eventHandler.onEvent(event, nextSequence, nextSequence == availableSequence);
                     nextSequence++;
                 }
