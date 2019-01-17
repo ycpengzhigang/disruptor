@@ -34,7 +34,7 @@ public class Sample {
         FourthEventHandler fourthEventHandler = new FourthEventHandler();
         LastEventHandler lastEventHandler = new LastEventHandler();
         
-        // 设置顺序
+        // 在没有任何一个先后顺序的时候
         disruptor.handleEventsWith(firstEventHandler, secondHandler, thirdEventHandler, fourthEventHandler, lastEventHandler);
 //        disruptor.after(firstEventHandler).handleEventsWith(secondHandler);
         // 在处理者firstEventHandler之后执行secondHandler最后执行lastEventHandler

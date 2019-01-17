@@ -30,7 +30,9 @@ import java.util.concurrent.Executor;
  * @param <T> the type of the configured {@link EventHandler}
  */
 class EventProcessorInfo<T> implements ConsumerInfo
-{
+{   /**
+      * 任务处理 是一个线程
+      */
     private final EventProcessor eventprocessor;
     private final EventHandler<? super T> handler;
     private final SequenceBarrier barrier;

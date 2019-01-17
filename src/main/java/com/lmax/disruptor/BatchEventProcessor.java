@@ -193,7 +193,7 @@ public final class BatchEventProcessor<T>
                 {
                     break;
                 }
-            }
+            } // 即便出现了异常也是需要设置序列的
             catch (final Throwable ex)
             {
                 exceptionHandler.handleEventException(ex, nextSequence, event);

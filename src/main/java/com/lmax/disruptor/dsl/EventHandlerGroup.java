@@ -145,7 +145,7 @@ public class EventHandlerGroup<T>
      * @param handlers the batch handlers that will process events.
      * @return a {@link EventHandlerGroup} that can be used to set up a event processor barrier over the created event processors.
      */
-    @SafeVarargs
+    @SafeVarargs // 这个注解的作用
     public final EventHandlerGroup<T> handleEventsWith(final EventHandler<? super T>... handlers)
     {
         return disruptor.createEventProcessors(sequences, handlers);

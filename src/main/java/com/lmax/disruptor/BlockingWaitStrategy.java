@@ -31,7 +31,7 @@ public final class BlockingWaitStrategy implements WaitStrategy
         throws AlertException, InterruptedException
     {
         long availableSequence;
-        // 说明生产者没有发布新的事件，则消费者进行阻塞 避免活锁 使用的是双重校验
+        // cursorSequence这个是表示生产者生产的位置
         if (cursorSequence.get() < sequence)
         {
             synchronized (mutex)
@@ -43,7 +43,7 @@ public final class BlockingWaitStrategy implements WaitStrategy
                 }
             }
         }
-        // 获取依赖的序列的序列要大于当前消费的序列
+        // 获取依赖的序列的序列要大于当前消费的序列 ????
         while ((availableSequence = dependentSequence.get()) < sequence)
         {
             barrier.checkAlert();

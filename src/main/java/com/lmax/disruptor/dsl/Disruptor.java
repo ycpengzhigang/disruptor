@@ -579,7 +579,7 @@ public class Disruptor<T>
         }
         // 每次添加完事件处理器后，更新追踪序列，用于后续调用链的添加判断。--???这个地方没能理解
         updateGatingSequencesForNextInChain(barrierSequences, processorSequences);
-
+        // 多个消费者进行消费disruptor
         return new EventHandlerGroup<>(this, consumerRepository, processorSequences);
     }
     // 更新下一个的追踪序列
