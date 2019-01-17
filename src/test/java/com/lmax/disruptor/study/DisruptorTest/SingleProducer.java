@@ -15,7 +15,7 @@ import com.lmax.disruptor.study.handle.LastEventHandler;
 import com.lmax.disruptor.study.handle.SecondEventHandler;
 import com.lmax.disruptor.study.handle.ThirdEventHandler;
 
-public class Sample {
+public class SingleProducer {
     
     private static final int BUFFER_SIZE = 2;
     
