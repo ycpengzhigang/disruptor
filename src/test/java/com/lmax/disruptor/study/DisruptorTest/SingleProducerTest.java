@@ -9,13 +9,13 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.study.event.ValueEvent;
-import com.lmax.disruptor.study.handle.FirstEventHandler;
-import com.lmax.disruptor.study.handle.FourthEventHandler;
-import com.lmax.disruptor.study.handle.LastEventHandler;
-import com.lmax.disruptor.study.handle.SecondEventHandler;
-import com.lmax.disruptor.study.handle.ThirdEventHandler;
+import com.lmax.disruptor.study.singleproducer.FirstEventHandler;
+import com.lmax.disruptor.study.singleproducer.FourthEventHandler;
+import com.lmax.disruptor.study.singleproducer.LastEventHandler;
+import com.lmax.disruptor.study.singleproducer.SecondEventHandler;
+import com.lmax.disruptor.study.singleproducer.ThirdEventHandler;
 
-public class SingleProducer {
+public class SingleProducerTest {
     
     private static final int BUFFER_SIZE = 2;
     

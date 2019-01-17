@@ -1,4 +1,4 @@
-package com.lmax.disruptor.study.handle;
+package com.lmax.disruptor.study.singleproducer;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
