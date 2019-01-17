@@ -17,7 +17,7 @@ import com.lmax.disruptor.study.handle.ThirdEventHandler;
 
 public class Sample {
     
-    private static final int BUFFER_SIZE = 4;
+    private static final int BUFFER_SIZE = 2;
     
     public static void main(String[] args) throws InterruptedException {
         // 线程工厂
@@ -34,24 +34,40 @@ public class Sample {
         FourthEventHandler fourthEventHandler = new FourthEventHandler();
         LastEventHandler lastEventHandler = new LastEventHandler();
         
-        // 在没有任何一个先后顺序的时候
-        disruptor.handleEventsWith(firstEventHandler, secondHandler, thirdEventHandler, fourthEventHandler, lastEventHandler);
-//        disruptor.after(firstEventHandler).handleEventsWith(secondHandler);
+          /**
+           * 在没有任何一个先后顺序的时候
+           *  每一个事件处理者 维护自己的一个序列
+           *  每一个事件处理者将自己的序列跟发布者的游标进行比较 如果大于游标将进行等待
+           *  
+           *  如果事件生产者将生产的进行覆盖消费者，将获取最小的事件处理序列将进行比较
+           *  
+           */
+//         disruptor.handleEventsWith(firstEventHandler/*, secondHandler, thirdEventHandler, fourthEventHandler, lastEventHandler*/);
+        disruptor.handleEventsWith(firstEventHandler);
+        
+        // 有一个先后的执行顺序
+        /**
+         * 1、先预启动事件处理者
+         * 
+         * 2、after的方法的作用是返回一个事件处理组 含有上一个事件处理者的序列
+         *   设置一个屏障，并将标识是否结束链有true改为false表示并 没有结束该链
+         */
+        disruptor.after(firstEventHandler).handleEventsWith(secondHandler);
+        
         // 在处理者firstEventHandler之后执行secondHandler最后执行lastEventHandler
-//        disruptor.after(firstEventHandler).handleEventsWith(secondHandler).then(lastEventHandler);
+        disruptor.after(firstEventHandler).handleEventsWith(secondHandler).then(lastEventHandler);
 
         // 启动爆裂者
         disruptor.start();
         RingBuffer<ValueEvent> ringBuffer = disruptor.getRingBuffer();
         
         // 发布事件
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             long sequence = ringBuffer.next();
             ValueEvent valueEvent = disruptor.get(sequence);
             valueEvent.setValue(String.valueOf(i));
             System.out.println("发布事件：" + i);
             ringBuffer.publish(sequence);
-            TimeUnit.SECONDS.sleep(5);
         }
         
         // 停止

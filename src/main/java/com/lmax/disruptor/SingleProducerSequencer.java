@@ -127,12 +127,14 @@ public final class SingleProducerSequencer extends SingleProducerSequencerFields
         long nextSequence = nextValue + n;
         long wrapPoint = nextSequence - bufferSize;
         long cachedGatingSequence = this.cachedValue;
-
+        
+        // 这个地方将保证不会被追尾
         if (wrapPoint > cachedGatingSequence || cachedGatingSequence > nextValue)
-        {
-            cursor.setVolatile(nextValue);  // StoreLoad fence
+        {   // 不理解?????
+            cursor.setVolatile(nextValue);  // StoreLoad fence 先store之后才能被load
 
             long minSequence;
+            // 如果大于最小的处理序列的序列值将进行等待
             while (wrapPoint > (minSequence = Util.getMinimumSequence(gatingSequences, nextValue)))
             {   // 将进行睡眠
                 LockSupport.parkNanos(1L); // TODO: Use waitStrategy to spin(旋转)?

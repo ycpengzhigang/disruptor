@@ -297,7 +297,7 @@ public class Disruptor<T>
     {
         final Sequence[] sequences = new Sequence[handlers.length];
         for (int i = 0, handlersLength = handlers.length; i < handlersLength; i++)
-        {
+        {   // 通过事件处理者获取相应的序列
             sequences[i] = consumerRepository.getSequenceFor(handlers[i]);
         }
 
@@ -577,7 +577,7 @@ public class Disruptor<T>
             consumerRepository.add(batchEventProcessor, eventHandler, barrier);
             processorSequences[i] = batchEventProcessor.getSequence();
         }
-        // 每次添加完事件处理器后，更新追踪序列，用于后续调用链的添加判断。--???这个地方没能理解
+        // 每次添加完事件处理器后，更新追踪序列，用于后续调用链的添加判断。--??? --这个地方没能理解 从追踪序列中移除屏障序列
         updateGatingSequencesForNextInChain(barrierSequences, processorSequences);
         // 多个消费者进行消费disruptor
         return new EventHandlerGroup<>(this, consumerRepository, processorSequences);
