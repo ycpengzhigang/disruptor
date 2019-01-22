@@ -15,7 +15,7 @@ public class SemaphoreTest {
         // 线程池
         ExecutorService exec = Executors.newCachedThreadPool();
         // 信号量
-        final Semaphore semaphore = new Semaphore(5);
+        final Semaphore semaphore = new Semaphore(1);
 
         // 模拟20个客户端访问
         for (int index = 0; index < 20; index++) {
@@ -23,14 +23,15 @@ public class SemaphoreTest {
             Runnable run = new Runnable() {
                 public void run() {
                     try {
-                        // 使用acquire()获取锁
-                        semaphore.acquire();
+                        // 使用acquire()获取锁 
+                        semaphore.acquire();// 非公平
                         System.out.println("Accessing: " + no);
                         // 睡眠1秒
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException e) {
                     } finally {
                         // 使用完成释放锁
+                        System.out.println("释放信号");
                         semaphore.release();
                     }
                 }
